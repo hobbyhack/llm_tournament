@@ -87,11 +87,16 @@ def run_tournament(args: argparse.Namespace) -> int:
         config = AppConfig(args.config)
 
         # Override config with command line arguments
+        # Override config with command line arguments
         if args.rounds:
             config.config["tournament"]["rounds_per_matchup"] = args.rounds
 
         if args.model:
+            # Update both the default model and all model mappings
             config.config["llm"]["default_model"] = args.model
+            # Update all model mappings to use the specified model
+            for prompt_type in config.config["llm"]["model_mapping"]:
+                config.config["llm"]["model_mapping"][prompt_type] = args.model
 
         if args.output:
             config.config["output"]["results_file"] = args.output

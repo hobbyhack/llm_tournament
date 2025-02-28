@@ -4,4 +4,4 @@ pydantic
 pyyaml
 ollama
 scipy
-pydantic
+matplotlib
