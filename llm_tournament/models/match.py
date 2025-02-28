@@ -102,12 +102,33 @@ class Match:
         if not self.result:
             return None
         
+        # Convert MatchResultModel to a dictionary for easier handling
+        result_dict = {}
+        if hasattr(self.result, "model_dump"):
+            # Use Pydantic's serialization if available
+            result_dict = self.result.model_dump()
+        else:
+            # Manual conversion
+            result_dict = {
+                "winner": self.result.winner,
+                "contender1_score": float(self.result.contender1_score),
+                "contender2_score": float(self.result.contender2_score),
+                "rationale": self.result.rationale,
+                "criteria_scores": {}
+            }
+            # Convert criteria scores
+            for name, scores in self.result.criteria_scores.items():
+                result_dict["criteria_scores"][name] = {
+                    "contender1": float(scores.contender1),
+                    "contender2": float(scores.contender2)
+                }
+        
         # Create a result dictionary that is easy to work with
         return {
             "id": self.id,
             "contender1_id": self.contender1.id,
             "contender2_id": self.contender2.id,
-            "result": self.result,  # This is a MatchResultModel
+            "result": result_dict,  # Now this is a regular dictionary
             "timestamp": self.timestamp.isoformat() if self.timestamp else None
         }
     

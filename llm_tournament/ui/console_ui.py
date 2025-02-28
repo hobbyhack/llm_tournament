@@ -118,8 +118,13 @@ class ConsoleUI:
         print("TOURNAMENT STANDINGS")
         print("-" * 70)
         
+        if not standings:
+            print("No standings available yet.")
+            print("=" * 70)
+            return
+        
         # Display table header
-        print(f"{'Rank':<5} {'Contender':<20} {'Wins':<5} {'Losses':<7} {'Points':<7} {'Win Rate':<8}")
+        print(f"{'Rank':<5} {'Contender':<20} {'Wins':<5} {'Losses':<7} {'Draws':<7} {'Points':<7} {'Win Rate':<8}")
         print("-" * 70)
         
         # Display each contender
@@ -137,9 +142,10 @@ class ConsoleUI:
             print(
                 f"{contender['rank']:<5} "
                 f"{display_name:<20} "
-                f"{contender['stats']['wins']:<5} "
-                f"{contender['stats']['losses']:<7} "
-                f"{contender['stats']['points']:<7} "
+                f"{contender['stats'].get('wins', 0):<5} "
+                f"{contender['stats'].get('losses', 0):<7} "
+                f"{contender['stats'].get('draws', 0):<7} "
+                f"{contender['stats'].get('points', 0):<7} "
                 f"{win_rate:.1f}%"
             )
         

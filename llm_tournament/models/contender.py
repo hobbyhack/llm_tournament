@@ -45,56 +45,49 @@ class Contender:
         """
         self.stats["matches_played"] += 1
         
-        # Handle result based on its type
-        if hasattr(result, "contender1_id") and hasattr(result, "contender2_id"):
-            # This is a dictionary-like result from Match.get_result()
+        try:
+            # Verify we have the necessary data
+            if not isinstance(result, dict) or "contender1_id" not in result or "contender2_id" not in result:
+                print(f"Warning: Invalid result format in update_stats: {type(result)}")
+                return
+                
+            result_obj = result.get("result", {})
+            if not result_obj:
+                print(f"Warning: Empty result object in update_stats")
+                return
+                
+            # Extract scores and winner based on which contender we are
             if result["contender1_id"] == self.id:
-                my_score = result["result"].contender1_score
-                opponent_score = result["result"].contender2_score
-                winner_id = result["result"].winner
+                # We're contender1
+                my_score = float(result_obj.get("contender1_score", 5.0))
+                opponent_score = float(result_obj.get("contender2_score", 5.0))
             else:
-                my_score = result["result"].contender2_score
-                opponent_score = result["result"].contender1_score
-                winner_id = result["result"].winner
-        else:
-            # This might be a direct MatchResultModel
-            # In this case, we need context from the match to determine which contender we are
-            print(f"Warning: Unexpected result format in update_stats: {type(result)}")
-            # Use a safe default
-            my_score = 5.0
-            opponent_score = 5.0
-            winner_id = None
+                # We're contender2
+                my_score = float(result_obj.get("contender2_score", 5.0))
+                opponent_score = float(result_obj.get("contender1_score", 5.0))
+                
+            winner_id = result_obj.get("winner")
+                
+            # Update total score
+            self.stats["total_score"] += my_score
             
-            # Try to extract information if possible
-            try:
-                if hasattr(result, "winner"):
-                    winner_id = result.winner
-                    
-                # If there's context about which contender we are
-                if hasattr(result, "_match_context") and hasattr(result._match_context, "contender1_id"):
-                    if result._match_context.contender1_id == self.id:
-                        my_score = result.contender1_score
-                        opponent_score = result.contender2_score
-                    else:
-                        my_score = result.contender2_score
-                        opponent_score = result.contender1_score
-            except Exception as e:
-                print(f"Error extracting scores from result: {e}")
+            # Update win/loss/draw record
+            if winner_id == self.id:
+                self.stats["wins"] += 1
+                self.stats["points"] += point_system.get("win", 3)
+            elif winner_id is None:
+                self.stats["draws"] += 1
+                self.stats["points"] += point_system.get("draw", 1)
+            else:
+                self.stats["losses"] += 1
+                self.stats["points"] += point_system.get("loss", 0)
+                
+            print(f"Updated stats for {self.id}: W-{self.stats['wins']} L-{self.stats['losses']} D-{self.stats.get('draws', 0)} Pts-{self.stats['points']}")
         
-        # Update total score
-        self.stats["total_score"] += my_score
-        
-        # Update win/loss/draw record
-        if winner_id == self.id:
-            self.stats["wins"] += 1
-            self.stats["points"] += point_system.get("win", 3)
-        elif winner_id is None:
-            self.stats["draws"] += 1
-            self.stats["points"] += point_system.get("draw", 1)
-        else:
-            self.stats["losses"] += 1
-            self.stats["points"] += point_system.get("loss", 0)
-    
+        except Exception as e:
+            print(f"Error updating stats for contender {self.id}: {e}")
+            # Don't increment stats in case of error to avoid inconsistencies
+            
     def get_stats(self) -> Dict[str, Any]:
         """
         Get the current statistics for this contender.

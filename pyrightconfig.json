@@ -1,0 +1,14 @@
+{
+    "extraPaths": [
+        "E:/dev/response_tournament/llm_tournament"
+    ],
+    "reportOptionalSubscript": false,
+    "reportArgumentType": false,
+    "reportIndexIssue": false,
+    "reportOperatorIssue": false,
+    "reportOptionalOperand": false,
+    "reportOptionalMemberAccess": false,
+    "reportCallIssue": false,
+    "reportIncompatibleMethodOverride": false,
+    "reportAttributeAccessIssue": false,
+}

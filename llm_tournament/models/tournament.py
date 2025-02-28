@@ -141,12 +141,30 @@ class Tournament:
             if success and match.result:
                 result = match.get_result()
                 
+                # Debug the result structure
+                print(f"\nDEBUG - Match result structure:")
+                print(f"  Type: {type(result)}")
+                print(f"  Keys: {result.keys() if isinstance(result, dict) else 'N/A'}")
+                if isinstance(result, dict) and "result" in result:
+                    print(f"  result type: {type(result['result'])}")
+                    if hasattr(result["result"], "model_dump"):
+                        print(f"  result content: {result['result'].model_dump()}")
+                    else:
+                        print(f"  result content: {result['result']}")
+                print()
+                
                 # Update contender statistics
                 contender1 = self.contenders[result["contender1_id"]]
                 contender2 = self.contenders[result["contender2_id"]]
                 
                 contender1.update_stats(result, self.point_system)
                 contender2.update_stats(result, self.point_system)
+                
+                # Debug the contender stats after update
+                print(f"DEBUG - Contender stats after update:")
+                print(f"  {contender1.id}: {contender1.stats}")
+                print(f"  {contender2.id}: {contender2.stats}")
+                print()
             
             # Update UI after match
             if ui_manager and not headless:

@@ -1,0 +1,13 @@
+{
+    "editor.formatOnSave": true,
+    "editor.formatOnSaveMode": "file",
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+    },
+    // "python.analysis.typeCheckingMode": "off",
+    "python.formatting.provider": "none",
+    "[django-html]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "junstyle.vscode-django-support"
+    },
+}
