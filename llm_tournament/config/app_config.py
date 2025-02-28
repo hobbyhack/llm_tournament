@@ -27,15 +27,15 @@ class AppConfig:
             },
             "llm": {
                 "provider": "ollama",
-                "default_model": "llama3",
+                "default_model": "phi4",
                 "timeout": 60,
                 "max_retries": 3,
                 "retry_delay": 5,
                 "model_mapping": {
-                    "match_evaluation": "llama3",
-                    "contender_comparison": "llama3",
-                    "scoring": "llama3",
-                    "validation": "llama3"
+                    "match_evaluation": "phi4",
+                    "contender_comparison": "phi4",
+                    "scoring": "phi4",
+                    "validation": "phi4"
                 }
             },
             "prompts": {
@@ -105,11 +105,9 @@ class AppConfig:
         Returns:
             The setting value or default if not found.
         """
-        print(keys)
         current = self.config
-        print(current)
         for key in keys:
-            if key not in current:
+            if not isinstance(current, dict) or key not in current:
                 return default
             current = current[key]
         return current

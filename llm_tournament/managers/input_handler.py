@@ -162,6 +162,10 @@ class InputHandler:
         contenders_file = None
         framework_file = None
         
+        # Check if directory exists
+        if not os.path.exists(directory) or not os.path.isdir(directory):
+            return None, None
+            
         # Look for input files
         for filename in os.listdir(directory):
             if filename.endswith(".json"):

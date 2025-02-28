@@ -26,7 +26,7 @@ class PromptManager:
         self.config = config
         self.prompt_templates = {}
         self.model_mapping = config.get("llm", {}).get("model_mapping", {})
-        self.default_model = config.get("llm", {}).get("default_model", "llama3")
+        self.default_model = config.get("llm", {}).get("default_model", "phi4")
         
         # Load all prompt templates
         self._load_prompt_templates()
@@ -66,12 +66,13 @@ class PromptManager:
         
         template = self.prompt_templates[prompt_name]
         
-        # Replace $variable with value
+        # Replace $variable with value using Python's string Template
+        # This is more reliable than using prompt templating for complex templates with JSON
         template_obj = Template(template)
         try:
-            return template_obj.substitute(**kwargs)
-        except KeyError as e:
-            print(f"Missing variable in prompt template {prompt_name}: {e}")
+            return template_obj.safe_substitute(**kwargs)
+        except Exception as e:
+            print(f"Error formatting prompt template {prompt_name}: {e}")
             return None
     
     def get_model_for_prompt(self, prompt_name: str) -> str:

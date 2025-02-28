@@ -24,23 +24,23 @@ Follow these instructions carefully:
 You must respond with a JSON object in exactly the following format:
 
 ```json
-{
+{{
   "comparisons": [
-    {
+    {{
       "criterion": "CriterionName",
       "winner": "$contender1_id",
       "explanation": "Detailed explanation of why contender 1 is stronger for this criterion"
-    },
-    {
+    }},
+    {{
       "criterion": "AnotherCriterionName",
       "winner": "$contender2_id",
       "explanation": "Detailed explanation of why contender 2 is stronger for this criterion"
-    },
+    }},
     ...additional criteria as needed
   ],
   "overall_winner": "$contender1_id",
   "rationale": "Comprehensive explanation of the overall comparison, synthesizing the individual criterion comparisons and weighing them according to the specified weights."
-}
+}}
 ```
 
 Important notes:

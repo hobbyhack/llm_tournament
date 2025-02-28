@@ -20,15 +20,15 @@ Follow these instructions carefully:
 You must respond with a JSON object in exactly the following format:
 
 ```json
-{
+{{
   "is_valid": true,
-  "corrected_response": {
+  "corrected_response": {{
     // The corrected response in the expected format
     // If is_valid is true, this should contain the original response
     // If is_valid is false, this should contain your corrected version
-  },
+  }},
   "error_message": "Detailed explanation of errors found and corrections made. Empty string if no errors."
-}
+}}
 ```
 
 Important notes:

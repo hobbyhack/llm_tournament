@@ -32,23 +32,23 @@ Follow these instructions carefully:
 You must respond with a JSON object in exactly the following format:
 
 ```json
-{
-  "criteria_scores": {
-    "Criterion1Name": {
+{{
+  "criteria_scores": {{
+    "Criterion1Name": {{
       "contender1": 8.5,
       "contender2": 7.2
-    },
-    "Criterion2Name": {
+    }},
+    "Criterion2Name": {{
       "contender1": 6.9,
       "contender2": 8.1
-    },
+    }},
     ...additional criteria as needed
-  },
+  }},
   "contender1_score": 7.8,
   "contender2_score": 7.5,
   "winner": "$contender1_id",
   "rationale": "Detailed explanation of the evaluation and comparison, highlighting strengths and weaknesses of each contender and justifying the scores and winner."
-}
+}}
 ```
 
 Important notes:

@@ -4,6 +4,7 @@ LLM manager for handling LLM API calls in the LLM Tournament application.
 
 import json
 import time
+import re
 from typing import Dict, Any, Optional, List
 import traceback
 
@@ -106,16 +107,13 @@ class LLMManager:
         
         # Create the prompt chain
         prompt = PromptTemplate.from_template(prompt_content)
-        chain = (
-            {"prompt": RunnablePassthrough()}
-            | prompt
-            | llm
-            | StrOutputParser()
-        )
+        chain = prompt | llm | StrOutputParser()
         
         # Execute the chain
         try:
-            response = chain.invoke({"prompt": ""})
+            # Directly invoke the chain with no additional inputs
+            # since the template already has all the variables
+            response = chain.invoke({})
             
             # Extract JSON from response (may be surrounded by markdown code blocks)
             json_data = self._extract_json(response)

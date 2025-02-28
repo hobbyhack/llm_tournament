@@ -20,24 +20,24 @@ Follow these instructions carefully:
 You must respond with a JSON object in exactly the following format:
 
 ```json
-{
-  "scores": {
-    "CriterionName": {
+{{
+  "scores": {{
+    "CriterionName": {{
       "contender1": 8.5,
       "contender2": 7.2
-    },
-    "AnotherCriterionName": {
+    }},
+    "AnotherCriterionName": {{
       "contender1": 6.9,
       "contender2": 8.1
-    },
+    }},
     ...additional criteria as needed
-  },
-  "overall_scores": {
+  }},
+  "overall_scores": {{
     "contender1": 7.8,
     "contender2": 7.5
-  },
+  }},
   "winner": "contender1_id"
-}
+}}
 ```
 
 Important notes:

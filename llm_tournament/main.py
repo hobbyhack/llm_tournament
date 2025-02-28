@@ -79,10 +79,10 @@ def setup_environment(config: AppConfig) -> None:
     """Set up the environment for the application."""
     # Create necessary directories
     directories = [
-        config.get_setting("prompts", "directory", "./prompts"),
-        config.get_setting("output", "match_log_dir", "./results/matches"),
-        os.path.dirname(config.get_setting("output", "results_file", "./results/tournament_results.json")),
-        os.path.dirname(config.get_setting("logging", "file", "./logs/tournament.log"))
+        config.get_setting("prompts", "directory", default="./prompts"),
+        config.get_setting("output", "match_log_dir", default="./results/matches"),
+        os.path.dirname(config.get_setting("output", "results_file", default="./results/tournament_results.json")),
+        os.path.dirname(config.get_setting("logging", "file", default="./logs/tournament.log"))
     ]
     
     for directory in directories:
