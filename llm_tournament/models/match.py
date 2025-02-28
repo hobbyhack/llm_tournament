@@ -102,11 +102,12 @@ class Match:
         if not self.result:
             return None
         
+        # Create a result dictionary that is easy to work with
         return {
             "id": self.id,
             "contender1_id": self.contender1.id,
             "contender2_id": self.contender2.id,
-            "result": self.result,
+            "result": self.result,  # This is a MatchResultModel
             "timestamp": self.timestamp.isoformat() if self.timestamp else None
         }
     

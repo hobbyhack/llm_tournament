@@ -47,7 +47,7 @@ class LLMManager:
     def _initialize_llm_clients(self) -> None:
         """Initialize LLM clients based on configuration."""
         provider = self.config.get("llm", {}).get("provider", "ollama")
-        default_model = self.config.get("llm", {}).get("default_model", "phi4")
+        default_model = self.config.get("llm", {}).get("default_model", "llama3")
         
         self.llm_clients = {}
         
@@ -189,12 +189,33 @@ class LLMManager:
         # Parse criteria scores
         criteria_scores = {}
         for criterion_name, scores in json_data["criteria_scores"].items():
-            if "contender1" not in scores or "contender2" not in scores:
-                raise ValueError(f"Invalid scores for criterion {criterion_name}")
-            
-            criteria_scores[criterion_name] = CriteriaScoreModel(
-                contender1=float(scores["contender1"]),
-                contender2=float(scores["contender2"])
+            try:
+                if not isinstance(scores, dict):
+                    print(f"WARNING: Invalid scores format for criterion {criterion_name}: {scores}")
+                    continue
+
+                # Try to extract contender1 and contender2 scores, providing defaults if missing
+                contender1_score = float(scores.get("contender1", 5.0))
+                contender2_score = float(scores.get("contender2", 5.0))
+                
+                criteria_scores[criterion_name] = CriteriaScoreModel(
+                    contender1=contender1_score,
+                    contender2=contender2_score
+                )
+            except Exception as e:
+                print(f"WARNING: Error parsing scores for criterion {criterion_name}: {e}")
+                # Provide default scores rather than failing
+                criteria_scores[criterion_name] = CriteriaScoreModel(
+                    contender1=5.0,
+                    contender2=5.0
+                )
+        
+        # If we couldn't parse any criteria scores, create a default one 
+        if not criteria_scores:
+            default_criterion = "Overall"
+            criteria_scores[default_criterion] = CriteriaScoreModel(
+                contender1=float(json_data["contender1_score"]),
+                contender2=float(json_data["contender2_score"])
             )
         
         # Determine winner if not provided
@@ -274,16 +295,11 @@ class LLMManager:
         
         # Create the prompt chain
         prompt = PromptTemplate.from_template(prompt_content)
-        chain = (
-            {"prompt": RunnablePassthrough()}
-            | prompt
-            | llm
-            | StrOutputParser()
-        )
+        chain = prompt | llm | StrOutputParser()
         
         # Execute the chain
         try:
-            validation_response = chain.invoke({"prompt": ""})
+            validation_response = chain.invoke({})
             json_data = self._extract_json(validation_response)
             
             # Check if validation was successful

@@ -21,7 +21,7 @@ llm:
   default_model: "phi4"
   
   # Timeout for LLM requests in seconds
-  timeout: 60
+  timeout: 1
   
   # Maximum number of retries for failed requests
   max_retries: 3
