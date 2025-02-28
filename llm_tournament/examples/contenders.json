@@ -1,0 +1,49 @@
+{
+  "contenders": [
+    {
+      "id": "slogan-1",
+      "content": "Just Do It",
+      "metadata": {
+        "brand": "Nike",
+        "year": 1988,
+        "category": "sportswear"
+      }
+    },
+    {
+      "id": "slogan-2",
+      "content": "Think Different",
+      "metadata": {
+        "brand": "Apple",
+        "year": 1997,
+        "category": "technology"
+      }
+    },
+    {
+      "id": "slogan-3",
+      "content": "I'm Lovin' It",
+      "metadata": {
+        "brand": "McDonald's",
+        "year": 2003,
+        "category": "food"
+      }
+    },
+    {
+      "id": "slogan-4",
+      "content": "The Ultimate Driving Machine",
+      "metadata": {
+        "brand": "BMW",
+        "year": 1975,
+        "category": "automotive"
+      }
+    },
+    {
+      "id": "slogan-5",
+      "content": "Impossible Is Nothing",
+      "metadata": {
+        "brand": "Adidas",
+        "year": 2004,
+        "category": "sportswear"
+      }
+    }
+  ]
+}

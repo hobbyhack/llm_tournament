@@ -1,0 +1,51 @@
+{
+  "assessment_framework": {
+    "id": "ad-slogan-framework",
+    "description": "A framework for evaluating the effectiveness and impact of advertising slogans across different criteria including memorability, relevance, appeal, and uniqueness.",
+    "evaluation_criteria": [
+      {
+        "name": "Memorability",
+        "description": "How easily the slogan can be remembered and recalled by the audience. Effective slogans are concise, rhythmic, and create a strong mental imprint.",
+        "weight": 0.30
+      },
+      {
+        "name": "Relevance",
+        "description": "How well the slogan connects to the brand's identity, values, and offerings. A relevant slogan accurately represents what the brand stands for and resonates with its target audience.",
+        "weight": 0.25
+      },
+      {
+        "name": "Appeal",
+        "description": "How emotionally engaging and attractive the slogan is to the target audience. High-appeal slogans evoke positive feelings and create a connection with consumers.",
+        "weight": 0.25
+      },
+      {
+        "name": "Uniqueness",
+        "description": "How distinctive and original the slogan is compared to competitors. Unique slogans stand out in the marketplace and create brand differentiation.",
+        "weight": 0.20
+      }
+    ],
+    "comparison_rules": [
+      "Evaluate slogans based on their intrinsic qualities, not on the current market performance of the associated brands",
+      "Consider how well each slogan would perform across different media channels (print, audio, digital)",
+      "Assess how timeless each slogan is, rather than focusing on current trends",
+      "Compare slogans directly against each other for each criterion before making an overall judgment",
+      "Consider both immediate impact and long-term effectiveness"
+    ],
+    "scoring_system": {
+      "type": "points",
+      "scale": {
+        "min": 0,
+        "max": 10
+      },
+      "categories": [
+        {"name": "Outstanding", "range": [9, 10], "description": "Exceptional performance that sets a new standard"},
+        {"name": "Excellent", "range": [8, 8.9], "description": "Significantly above average performance"},
+        {"name": "Good", "range": [7, 7.9], "description": "Above average performance"},
+        {"name": "Satisfactory", "range": [6, 6.9], "description": "Average performance"},
+        {"name": "Marginal", "range": [5, 5.9], "description": "Below average but acceptable performance"},
+        {"name": "Poor", "range": [3, 4.9], "description": "Significantly below average performance"},
+        {"name": "Very Poor", "range": [0, 2.9], "description": "Fails to meet basic requirements"}
+      ]
+    }
+  }
+}

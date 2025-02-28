@@ -1,0 +1,74 @@
+# LLM Tournament Configuration
+
+tournament:
+  # Number of rounds for each matchup of contenders
+  rounds_per_matchup: 1
+  
+  # Whether to create reverse matchups (A vs B and B vs A)
+  reverse_matchups: true
+  
+  # Point system for tournament standings
+  point_system:
+    win: 3
+    draw: 1
+    loss: 0
+
+llm:
+  # LLM provider to use
+  provider: "ollama"
+  
+  # Default model to use
+  default_model: "phi4"
+  
+  # Timeout for LLM requests in seconds
+  timeout: 60
+  
+  # Maximum number of retries for failed requests
+  max_retries: 3
+  
+  # Delay between retries in seconds (will use exponential backoff)
+  retry_delay: 5
+  
+  # Mapping of prompt names to models
+  model_mapping:
+    match_evaluation: "phi4"
+    contender_comparison: "phi4"
+    scoring: "phi4"
+    validation: "phi4"
+
+prompts:
+  # Directory containing prompt templates
+  directory: "./prompts"
+  
+  # Format of prompt templates
+  format: "markdown"
+
+ui:
+  # Whether to enable the console UI
+  enabled: true
+  
+  # How often to update the UI (in seconds)
+  update_frequency: 1
+  
+  # Whether to display detailed match results
+  display_detailed_matches: true
+
+output:
+  # File to save tournament results to
+  results_file: "./results/tournament_results.json"
+  
+  # Directory to save match logs to
+  match_log_dir: "./results/matches"
+
+logging:
+  # Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  level: "INFO"
+  
+  # File to save logs to
+  file: "./logs/tournament.log"
+  
+  # Whether to log to console
+  console: true
+  
+  # Log format
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
