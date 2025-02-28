@@ -25,6 +25,7 @@ Use cases include:
 - Configurable LLM models per prompt type
 - Console-based UI with progress indicators
 - Comprehensive logging
+- **NEW: Consistency analysis across multiple tournament runs**
 
 ## Installation
 
@@ -71,7 +72,35 @@ options:
   --model MODEL         LLM model to use
 ```
 
-### Configuration
+### Multiple Tournament Runs
+
+To run multiple tournaments with different models and analyze consistency:
+
+```bash
+python run_multiple_tournaments.py --contenders examples/contenders.json --framework examples/framework.json --models mistral-small phi4 --runs 5 --run-analysis
+```
+
+This will:
+1. Run 5 tournaments with each specified model
+2. Save results to the `results` directory
+3. Run consistency analysis to compare model performance
+
+### Consistency Analysis
+
+After running multiple tournaments, you can analyze their consistency:
+
+```bash
+python analyze_consistency.py --group-by config.llm.default_model --verbose
+```
+
+This will:
+1. Analyze all tournament result files in the `results` directory
+2. Group them by the LLM model used
+3. Calculate consistency metrics for rankings, win rates, matchups, and scores
+4. Export summary reports to the `analysis_results` directory
+5. Print a comparison of which model provides the most consistent results
+
+## Configuration
 
 The application uses a YAML configuration file (`config.yaml`) that can be customized. You can specify:
 - Tournament settings (rounds, reverse matchups, point system)
@@ -144,10 +173,25 @@ The assessment framework is defined in a JSON file:
 
 ## Output
 
+### Tournament Results
+
 The tournament results are saved as a JSON file with detailed information about:
 - Tournament configuration and statistics
 - Complete match results with scores and rationales
 - Final standings and rankings
+
+### Consistency Analysis
+
+The consistency analysis outputs several files:
+- `consistency_summary.csv`: High-level comparison of metrics across groups
+- `consistency_[group]_[timestamp].json`: Detailed metrics for each group
+- `consistency_summary_[timestamp].json`: Combined summary with best-in-class comparisons
+
+Metrics calculated include:
+- **Ranking Stability**: How consistent are the final rankings across tournaments?
+- **Win Rate Consistency**: How consistent are win percentages for each contender?
+- **Matchup Consistency**: How often do the same pairings result in the same winner?
+- **Score Consistency**: How stable are the evaluation scores across runs?
 
 ## Customizing Prompts
 
@@ -155,4 +199,4 @@ Prompt templates are stored as Markdown files in the `prompts/` directory. You c
 
 ## License
 
-[License Name](LICENSE)
+[MIT License](LICENSE)
