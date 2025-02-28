@@ -13,11 +13,11 @@ class PromptManager:
     Manages prompt templates for LLM interactions.
     Handles loading templates from files and formatting them with variables.
     """
-    
+
     def __init__(self, prompt_directory: str, config: Dict[str, Any]):
         """
         Initialize with the directory containing prompt templates.
-        
+
         Args:
             prompt_directory: Path to directory containing prompt markdown files
             config: Configuration settings
@@ -27,45 +27,47 @@ class PromptManager:
         self.prompt_templates = {}
         self.model_mapping = config.get("llm", {}).get("model_mapping", {})
         self.default_model = config.get("llm", {}).get("default_model", "phi4")
-        
+
         # Load all prompt templates
         self._load_prompt_templates()
-    
+
     def _load_prompt_templates(self) -> None:
         """Load all prompt templates from the prompt directory."""
         if not os.path.exists(self.prompt_directory):
-            raise FileNotFoundError(f"Prompt directory not found: {self.prompt_directory}")
-        
+            raise FileNotFoundError(
+                f"Prompt directory not found: {self.prompt_directory}"
+            )
+
         for filename in os.listdir(self.prompt_directory):
             if filename.endswith(".md"):
                 prompt_name = os.path.splitext(filename)[0]
                 file_path = os.path.join(self.prompt_directory, filename)
-                
+
                 try:
-                    with open(file_path, 'r', encoding='utf-8') as f:
+                    with open(file_path, "r", encoding="utf-8") as f:
                         template_content = f.read()
-                    
+
                     self.prompt_templates[prompt_name] = template_content
                 except Exception as e:
                     print(f"Error loading prompt template {filename}: {e}")
-    
+
     def get_prompt(self, prompt_name: str, **kwargs: Any) -> Optional[str]:
         """
         Get a prompt with variables filled in.
-        
+
         Args:
             prompt_name: Name of the prompt (without extension)
             **kwargs: Variables to substitute in the template
-            
+
         Returns:
             Formatted prompt string or None if not found
         """
         if prompt_name not in self.prompt_templates:
             print(f"Prompt template not found: {prompt_name}")
             return None
-        
+
         template = self.prompt_templates[prompt_name]
-        
+
         # Replace $variable with value using Python's string Template
         # This is more reliable than using prompt templating for complex templates with JSON
         template_obj = Template(template)
@@ -74,41 +76,41 @@ class PromptManager:
         except Exception as e:
             print(f"Error formatting prompt template {prompt_name}: {e}")
             return None
-    
+
     def get_model_for_prompt(self, prompt_name: str) -> str:
         """
         Get the model to use for a specific prompt.
-        
+
         Args:
             prompt_name: Name of the prompt
-            
+
         Returns:
             Model name to use for this prompt
         """
         return self.model_mapping.get(prompt_name, self.default_model)
-    
+
     def create_default_prompts(self) -> None:
         """Create default prompt templates if they don't exist."""
         if not os.path.exists(self.prompt_directory):
             os.makedirs(self.prompt_directory)
-        
+
         default_prompts = {
             "match_evaluation.md": self._get_default_match_evaluation_prompt(),
             "contender_comparison.md": self._get_default_contender_comparison_prompt(),
             "scoring.md": self._get_default_scoring_prompt(),
-            "validation.md": self._get_default_validation_prompt()
+            "validation.md": self._get_default_validation_prompt(),
         }
-        
+
         for filename, content in default_prompts.items():
             file_path = os.path.join(self.prompt_directory, filename)
             if not os.path.exists(file_path):
                 try:
-                    with open(file_path, 'w', encoding='utf-8') as f:
+                    with open(file_path, "w", encoding="utf-8") as f:
                         f.write(content)
                     print(f"Created default prompt template: {filename}")
                 except Exception as e:
                     print(f"Error creating default prompt template {filename}: {e}")
-    
+
     def _get_default_match_evaluation_prompt(self) -> str:
         """Get the default match evaluation prompt template."""
         return """# Tournament Match Evaluation
@@ -154,7 +156,7 @@ Respond with a JSON object in the following format:
 Set the "winner" field to the ID of the winning contender. If it's a tie, you can set this to null.
 The "rationale" should explain your reasoning in detail, highlighting the key differentiating factors.
 """
-    
+
     def _get_default_contender_comparison_prompt(self) -> str:
         """Get the default contender comparison prompt template."""
         return """# Contender Comparison
@@ -190,7 +192,7 @@ Respond with a JSON object in the following format:
 }
 ```
 """
-    
+
     def _get_default_scoring_prompt(self) -> str:
         """Get the default scoring prompt template."""
         return """# Scoring Evaluation
@@ -223,7 +225,7 @@ Respond with a JSON object in the following format:
 }
 ```
 """
-    
+
     def _get_default_validation_prompt(self) -> str:
         """Get the default validation prompt template."""
         return """# Response Validation

@@ -1,0 +1,10 @@
+[MASTER]
+docstring-min-length=10
+disable=missing-function-dosctring,missing-class-docstring,missing-module-docstring,import-error,reportMissingImports
+[FORMAT]
+good-names=i,j,x,y,id
+"[python]": {
+    "editor.formatOnSaveMode": "file",
+    "editor.formatOnPaste": true,
+    "editor.defaultFormatter": "ms-python.black-formatter",
+}
