@@ -190,24 +190,34 @@ def run_multiple_tournaments(args: argparse.Namespace) -> Dict[str, List[str]]:
     return results_by_model
 
 
-def run_consistency_analysis(results_by_model: Dict[str, List[str]]):
+def run_consistency_analysis(
+    results_by_model: Dict[str, List[str]], output_dir: str = "./analysis_results"
+):
     """
     Run consistency analysis on the tournament results.
 
     Args:
         results_by_model: Dictionary mapping models to lists of result file paths
+        output_dir: Directory for analysis results
     """
     print(f"\n{'=' * 70}")
     print("RUNNING CONSISTENCY ANALYSIS")
     print(f"{'=' * 70}")
 
+    # Create the output directory
+    os.makedirs(output_dir, exist_ok=True)
+
     command = [
-        sys.executable,
+        sys.executable,  # Use the current Python interpreter path
         "analyze_consistency.py",
         "--group-by",
         "config.llm.default_model",
         "--verbose",
+        "--output-dir",
+        output_dir,
     ]
+
+    print(f"Running command: {' '.join(command)}")
 
     try:
         process = subprocess.run(
@@ -286,24 +296,24 @@ def main():
         print(f"  Completed: {len(files)}/{args.runs}")
 
         if files:
-            first_file = files[0]
-            with open(first_file, "r", encoding="utf-8") as f:
-                try:
+            try:
+                first_file = files[0]
+                with open(first_file, "r", encoding="utf-8") as f:
                     data = json.load(f)
-                    contenders = len(
-                        data.get("statistics", {}).get("total_contenders", 0)
-                    )
-                    matches = data.get("statistics", {}).get("total_matches", 0)
-                    print(f"  Contenders: {contenders}")
-                    print(f"  Matches per tournament: {matches}")
-                except Exception as e:
-                    print(f"  Error reading result file: {e}")
+                    # Safely access nested properties with get()
+                    statistics = data.get("statistics", {})
+                    total_contenders = statistics.get("total_contenders", "unknown")
+                    total_matches = statistics.get("total_matches", "unknown")
+                    print(f"  Contenders: {total_contenders}")
+                    print(f"  Matches per tournament: {total_matches}")
+            except Exception as e:
+                print(f"  Error reading result file: {e}")
 
         print()
 
     # Run analysis if requested
     if args.run_analysis:
-        run_consistency_analysis(results)
+        run_consistency_analysis(results, args.output_dir)
 
     return 0
 

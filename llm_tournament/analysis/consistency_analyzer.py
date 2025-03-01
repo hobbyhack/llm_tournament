@@ -499,6 +499,9 @@ class ConsistencyAnalyzer:
             print("No metrics to export. Run analyze_all_metrics first.")
             return ""
 
+        # Create the directory if it doesn't exist
+        os.makedirs(os.path.dirname(output_file), exist_ok=True)
+
         with open(output_file, "w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
 

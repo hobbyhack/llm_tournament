@@ -9,6 +9,7 @@ how consistent the tournament results are across runs.
 import os
 import sys
 import argparse
+import glob
 from analysis.consistency_analyzer import ConsistencyAnalyzer
 
 
@@ -62,6 +63,23 @@ def parse_arguments():
 def main():
     """Run the consistency analysis."""
     args = parse_arguments()
+
+    # Create the output directory if it doesn't exist
+    os.makedirs(args.output_dir, exist_ok=True)
+
+    # Print diagnostic information
+    print("\nAnalyzer Diagnostics:")
+    print(f"Results directory: {os.path.abspath(args.results_dir)}")
+    print(f"Output directory: {os.path.abspath(args.output_dir)}")
+    print(
+        f"Summary file path: {os.path.abspath(os.path.join(args.output_dir, args.summary_file))}"
+    )
+
+    # Count files matching pattern
+    files = glob.glob(os.path.join(args.results_dir, args.pattern))
+    print(f"Files matching pattern '{args.pattern}': {len(files)}")
+    if files:
+        print(f"Sample file: {os.path.basename(files[0])}")
 
     # Create the analyzer
     analyzer = ConsistencyAnalyzer(results_dir=args.results_dir)
