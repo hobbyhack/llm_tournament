@@ -2,7 +2,7 @@
 
 tournament:
   # Number of rounds for each matchup of contenders
-  rounds_per_matchup: 1
+  rounds_per_matchup: 4
   
   # Whether to create reverse matchups (A vs B and B vs A)
   reverse_matchups: true

@@ -1,0 +1,73 @@
+{
+    "assessment_framework": {
+        "id": "facebook-ad-copy-evaluation",
+        "description": "This framework evaluates the quality of Facebook ad copy, focusing on headline impact, copy persuasiveness, and audience relevance. These criteria are essential for creating effective ads that grab attention, persuade users to take action, and resonate with the target audience. The framework ensures a fair and consistent evaluation process for comparing ad copy in a tournament-style system.",
+        "evaluation_criteria": [
+            {
+                "name": "Headline Impact",
+                "description": "The headline should be attention-grabbing, clear, and relevant to the audience. It should effectively communicate the main message or value proposition within the character limit. A strong headline is crucial for standing out in a crowded feed and capturing user interest immediately.",
+                "weight": 0.35
+            },
+            {
+                "name": "Copy Persuasiveness",
+                "description": "The body copy should be persuasive, providing compelling reasons to engage with the ad and encouraging the reader to take the desired action. It should use persuasive techniques such as emotional appeals, social proof, or highlighting benefits to convince users effectively.",
+                "weight": 0.40
+            },
+            {
+                "name": "Audience Relevance",
+                "description": "The copy should be tailored to resonate with the specific interests, needs, and pain points of the target audience. It should use appropriate language, tone, and content that aligns with the audience's demographics and behaviors to ensure the message is relevant and engaging.",
+                "weight": 0.25
+            }
+        ],
+        "comparison_rules": [
+            "Evaluate each criterion independently to ensure a comprehensive assessment.",
+            "Use the provided scoring system to assign points based on the quality of each criterion.",
+            "Avoid personal biases and focus on how well the copy meets the criteria.",
+            "Consider the target audience and the ad's objective when assessing relevance and persuasiveness.",
+            "Ensure that the copy adheres to Facebook's advertising policies.",
+            "Focus solely on the text components (headline, primary text, link description) and disregard visual elements.",
+            "When in doubt, prioritize clarity and conciseness in the copy."
+        ],
+        "scoring_system": {
+            "type": "points",
+            "scale": {
+                "min": 0,
+                "max": 10
+            },
+            "categories": [
+                {
+                    "name": "Excellent",
+                    "range": [
+                        8,
+                        10
+                    ],
+                    "description": "The copy exceeds expectations in this criterion, demonstrating exceptional quality."
+                },
+                {
+                    "name": "Good",
+                    "range": [
+                        6,
+                        7.9
+                    ],
+                    "description": "The copy meets expectations and is effective in this criterion."
+                },
+                {
+                    "name": "Fair",
+                    "range": [
+                        4,
+                        5.9
+                    ],
+                    "description": "The copy has some strengths but also notable weaknesses in this criterion."
+                },
+                {
+                    "name": "Poor",
+                    "range": [
+                        0,
+                        3.9
+                    ],
+                    "description": "The copy does not meet the basic requirements for this criterion."
+                }
+            ]
+        }
+    }
+}

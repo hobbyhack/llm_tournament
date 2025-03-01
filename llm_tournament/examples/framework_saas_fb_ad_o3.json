@@ -1,0 +1,90 @@
+{
+    "assessment_framework": {
+        "id": "saas-fb-ac-copy",
+        "description": "This framework evaluates the effectiveness of Facebook ad copy for SaaS products in the personal development space with a focus on lead generation and conversion optimization. It measures clarity of message, engagement level, persuasiveness, call-to-action strength, and audience targeting relevance to ensure ads generate quality leads. These criteria are critical because they directly impact the conversion rate and overall campaign ROI in a competitive, conversion-driven environment.",
+        "evaluation_criteria": [
+            {
+                "name": "Clarity",
+                "description": "Assesses whether the ad copy communicates its core message and value proposition in a simple and concise manner. It ensures that potential leads immediately understand the product and its benefits without confusion.",
+                "weight": 0.20
+            },
+            {
+                "name": "Engagement",
+                "description": "Measures the ad copy's ability to capture attention and sustain interest through compelling language, an attractive headline, and emotional triggers relevant to personal development.",
+                "weight": 0.20
+            },
+            {
+                "name": "Persuasiveness",
+                "description": "Evaluates how convincingly the ad copy builds desire for the SaaS product by highlighting benefits, addressing pain points, and using both emotional appeal and logical reasoning to prompt action.",
+                "weight": 0.20
+            },
+            {
+                "name": "Call-to-Action Effectiveness",
+                "description": "Determines the strength, clarity, and motivational quality of the call-to-action (CTA) in the ad. A strong CTA clearly directs potential leads on what to do next, enhancing conversion rates.",
+                "weight": 0.20
+            },
+            {
+                "name": "Audience Targeting/Relevance",
+                "description": "Checks if the ad copy is tailored to the specific personal development audience, using appropriate tone and language that resonates with their needs and goals. It ensures the ad speaks directly to its intended demographic.",
+                "weight": 0.20
+            }
+        ],
+        "comparison_rules": [
+            "Evaluate each ad independently against all criteria to avoid bias from brand recognition or external factors.",
+            "Apply the same standards uniformly across all ads to ensure consistent scoring for clarity, engagement, persuasiveness, CTA effectiveness, and audience targeting.",
+            "Mitigate bias by focusing solely on the text of the ad copy, avoiding influence from images, branding, or known campaign performance.",
+            "Judge relevance by ensuring the ad copy addresses the specific needs and aspirations of the personal development audience.",
+            "Penalize ads that include misleading claims, offensive language, or unrealistic promises to ensure ethical and effective messaging.",
+            "Compare overall weighted scores and consider the balance of strengths and weaknesses when making final evaluations."
+        ],
+        "scoring_system": {
+            "type": "points",
+            "scale": {
+                "min": 0,
+                "max": 10
+            },
+            "categories": [
+                {
+                    "name": "Excellent",
+                    "range": [
+                        8,
+                        10
+                    ],
+                    "description": "Ad copy that excels in all evaluation criteria with a clear, compelling message that is highly engaging, persuasive, and perfectly targeted, resulting in strong conversion potential."
+                },
+                {
+                    "name": "Good",
+                    "range": [
+                        6,
+                        7.9
+                    ],
+                    "description": "Ad copy that performs above average, meeting most criteria solidly with minor areas for improvement to optimize lead generation."
+                },
+                {
+                    "name": "Fair",
+                    "range": [
+                        4,
+                        5.9
+                    ],
+                    "description": "Ad copy with average effectiveness that shows some strengths but also notable weaknesses in clarity, engagement, persuasiveness, CTA, or targeting, requiring improvement."
+                },
+                {
+                    "name": "Poor",
+                    "range": [
+                        2,
+                        3.9
+                    ],
+                    "description": "Ad copy that has significant shortcomings across multiple criteria, leading to low conversion potential and necessitating substantial revision."
+                },
+                {
+                    "name": "Very Poor",
+                    "range": [
+                        0,
+                        1.9
+                    ],
+                    "description": "Ad copy that is ineffective or detrimental, failing to meet most criteria and likely to be ignored by the target audience."
+                }
+            ]
+        }
+    }
+}

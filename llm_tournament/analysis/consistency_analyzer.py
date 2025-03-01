@@ -121,12 +121,33 @@ class ConsistencyAnalyzer:
         rankings_by_tournament = []
         for tournament in tournament_group:
             rankings = {}
-            for ranking in tournament.get("rankings", []):
-                contender_id = ranking.get("contender_id")
-                rank = ranking.get("rank")
-                if contender_id and rank:
-                    rankings[contender_id] = rank
-            rankings_by_tournament.append(rankings)
+            try:
+                for ranking in tournament.get("rankings", []):
+                    contender_id = ranking.get("contender_id")
+                    rank = ranking.get("rank")
+                    if contender_id and rank:
+                        rankings[contender_id] = rank
+
+                # Only add if we have at least one valid ranking
+                if rankings:
+                    rankings_by_tournament.append(rankings)
+                else:
+                    print(f"Warning: Tournament has no valid rankings")
+            except Exception as e:
+                print(f"Error extracting rankings from tournament: {e}")
+
+        # Skip further processing if we don't have enough data
+        if len(rankings_by_tournament) < 2:
+            return {
+                "overall": {
+                    "error": f"Need at least 2 tournaments with rankings, found {len(rankings_by_tournament)}",
+                    "avg_stdev": 0,
+                    "rank_stability": 0,
+                    "contender_count": 0,
+                    "tournament_count": len(rankings_by_tournament),
+                },
+                "contenders": {},
+            }
 
         # Calculate consistency metrics for each contender
         contender_metrics = {}
@@ -208,20 +229,59 @@ class ConsistencyAnalyzer:
         win_rates_by_tournament = []
         for tournament in tournament_group:
             win_rates = {}
-            for ranking in tournament.get("rankings", []):
-                contender_id = ranking.get("contender_id")
-                stats = ranking.get("stats", {})
+            try:
+                for ranking in tournament.get("rankings", []):
+                    contender_id = ranking.get("contender_id")
+                    if not contender_id:
+                        continue
 
-                matches_played = stats.get("matches_played", 0)
-                wins = stats.get("wins", 0)
+                    stats = ranking.get("stats", {})
 
-                if matches_played > 0:
-                    win_rate = wins / matches_played
+                    # Handle different possible structures for stats
+                    if isinstance(stats, dict):
+                        matches_played = stats.get("matches_played", 0)
+                        wins = stats.get("wins", 0)
+
+                        if matches_played > 0:
+                            win_rate = wins / matches_played
+                        else:
+                            win_rate = 0
+                    else:
+                        # Try to access attributes if stats is not a dict
+                        try:
+                            matches_played = getattr(stats, "matches_played", 0)
+                            wins = getattr(stats, "wins", 0)
+
+                            if matches_played > 0:
+                                win_rate = wins / matches_played
+                            else:
+                                win_rate = 0
+                        except Exception:
+                            # Skip if we can't extract the stats
+                            continue
+
+                    win_rates[contender_id] = win_rate
+
+                # Only add if we have at least one valid win rate
+                if win_rates:
+                    win_rates_by_tournament.append(win_rates)
                 else:
-                    win_rate = 0
+                    print(f"Warning: Tournament has no valid win rates")
+            except Exception as e:
+                print(f"Error extracting win rates from tournament: {e}")
 
-                win_rates[contender_id] = win_rate
-            win_rates_by_tournament.append(win_rates)
+        # Skip further processing if we don't have enough data
+        if len(win_rates_by_tournament) < 2:
+            return {
+                "overall": {
+                    "error": f"Need at least 2 tournaments with win rates, found {len(win_rates_by_tournament)}",
+                    "avg_stdev": 0,
+                    "avg_coefficient_of_variation": 0,
+                    "contender_count": 0,
+                    "tournament_count": len(win_rates_by_tournament),
+                },
+                "contenders": {},
+            }
 
         # Calculate consistency metrics for each contender
         contender_metrics = {}
@@ -302,9 +362,22 @@ class ConsistencyAnalyzer:
                 # Create a unique key for this matchup (alphabetically sorted)
                 matchup_key = tuple(sorted([contender1_id, contender2_id]))
 
-                # Get the result
-                result = match.get("result", {})
-                winner = result.get("winner")
+                # Get the result - handle None case
+                result = match.get("result")
+                if result is None:
+                    # Skip matches with no results
+                    continue
+
+                # Check if winner exists and handle both dictionary and direct access
+                if isinstance(result, dict):
+                    winner = result.get("winner")
+                else:
+                    # Try attribute access for non-dict objects (like Pydantic models)
+                    try:
+                        winner = getattr(result, "winner", None)
+                    except Exception:
+                        # Skip if we can't get the winner
+                        continue
 
                 # Record the outcome (1 if first contender won, -1 if second contender won, 0 for tie)
                 if winner == contender1_id:
@@ -385,20 +458,60 @@ class ConsistencyAnalyzer:
         scores_by_tournament = []
         for tournament in tournament_group:
             scores = {}
-            for ranking in tournament.get("rankings", []):
-                contender_id = ranking.get("contender_id")
-                stats = ranking.get("stats", {})
+            try:
+                for ranking in tournament.get("rankings", []):
+                    contender_id = ranking.get("contender_id")
+                    if not contender_id:
+                        continue
 
-                if "average_score" in stats:
-                    scores[contender_id] = stats["average_score"]
-                elif "total_score" in stats and stats.get("matches_played", 0) > 0:
-                    scores[contender_id] = (
-                        stats["total_score"] / stats["matches_played"]
-                    )
+                    stats = ranking.get("stats", {})
+
+                    # Handle different possible structures for stats
+                    score = None
+                    if isinstance(stats, dict):
+                        if "average_score" in stats:
+                            score = stats["average_score"]
+                        elif (
+                            "total_score" in stats
+                            and stats.get("matches_played", 0) > 0
+                        ):
+                            score = stats["total_score"] / stats["matches_played"]
+                    else:
+                        # Try to access attributes if stats is not a dict
+                        try:
+                            if hasattr(stats, "average_score"):
+                                score = stats.average_score
+                            elif (
+                                hasattr(stats, "total_score")
+                                and getattr(stats, "matches_played", 0) > 0
+                            ):
+                                score = stats.total_score / stats.matches_played
+                        except Exception:
+                            pass
+
+                    if score is not None:
+                        scores[contender_id] = score
+
+                # Only add if we have at least one valid score
+                if scores:
+                    scores_by_tournament.append(scores)
                 else:
-                    scores[contender_id] = 0
+                    print(f"Warning: Tournament has no valid scores")
+            except Exception as e:
+                print(f"Error extracting scores from tournament: {e}")
 
-            scores_by_tournament.append(scores)
+        # Skip further processing if we don't have enough data
+        if len(scores_by_tournament) < 2:
+            return {
+                "overall": {
+                    "error": f"Need at least 2 tournaments with scores, found {len(scores_by_tournament)}",
+                    "avg_stdev": 0,
+                    "avg_coefficient_of_variation": 0,
+                    "contender_count": 0,
+                    "tournament_count": len(scores_by_tournament),
+                },
+                "contenders": {},
+            }
 
         # Calculate consistency metrics for each contender
         contender_metrics = {}
@@ -468,17 +581,50 @@ class ConsistencyAnalyzer:
                 f"Analyzing {len(tournaments)} tournaments in group '{group_name}'..."
             )
 
-            group_metrics = {
-                "tournaments": len(tournaments),
-                "ranking_consistency": self.calculate_ranking_consistency(tournaments),
-                "win_rate_consistency": self.calculate_win_rate_consistency(
-                    tournaments
-                ),
-                "matchup_consistency": self.calculate_matchup_consistency(tournaments),
-                "score_consistency": self.calculate_score_consistency(tournaments),
-            }
+            try:
+                # Calculate each metric with error handling
+                try:
+                    ranking_consistency = self.calculate_ranking_consistency(
+                        tournaments
+                    )
+                except Exception as e:
+                    print(f"Error calculating ranking consistency: {e}")
+                    ranking_consistency = {"error": str(e)}
 
-            results[group_name] = group_metrics
+                try:
+                    win_rate_consistency = self.calculate_win_rate_consistency(
+                        tournaments
+                    )
+                except Exception as e:
+                    print(f"Error calculating win rate consistency: {e}")
+                    win_rate_consistency = {"error": str(e)}
+
+                try:
+                    matchup_consistency = self.calculate_matchup_consistency(
+                        tournaments
+                    )
+                except Exception as e:
+                    print(f"Error calculating matchup consistency: {e}")
+                    matchup_consistency = {"error": str(e)}
+
+                try:
+                    score_consistency = self.calculate_score_consistency(tournaments)
+                except Exception as e:
+                    print(f"Error calculating score consistency: {e}")
+                    score_consistency = {"error": str(e)}
+
+                group_metrics = {
+                    "tournaments": len(tournaments),
+                    "ranking_consistency": ranking_consistency,
+                    "win_rate_consistency": win_rate_consistency,
+                    "matchup_consistency": matchup_consistency,
+                    "score_consistency": score_consistency,
+                }
+
+                results[group_name] = group_metrics
+            except Exception as e:
+                print(f"Error analyzing group '{group_name}': {e}")
+                results[group_name] = {"tournaments": len(tournaments), "error": str(e)}
 
         self.metrics = results
         return results
