@@ -5,3 +5,7 @@ pyyaml
 ollama
 scipy
 matplotlib
+streamlit
+pandas 
+seaborn
+numpy

@@ -203,6 +203,13 @@ Metrics calculated include:
 
 Prompt templates are stored as Markdown files in the `prompts/` directory. You can customize these to adjust how the LLM evaluates contenders.
 
+## Results viewer
+There is a streamlit results viewer. To run:
+```bash
+streamlit run ui/web_ui.py
+```
+
+
 ## License
 
 [MIT License](LICENSE)
