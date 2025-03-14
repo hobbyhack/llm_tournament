@@ -723,7 +723,7 @@ class ConsistencyAnalyzer:
 
         # Export each group's metrics to a separate file
         for group_name, metrics in self.metrics.items():
-            filename = f"consistency_{group_name}_{timestamp}.json"
+            filename = f"consistency_{group_name.repace(":", "_")}_{timestamp}.json"
             file_path = os.path.join(output_dir, filename)
 
             with open(file_path, "w", encoding="utf-8") as f:
