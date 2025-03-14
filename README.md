@@ -204,7 +204,7 @@ Metrics calculated include:
 Prompt templates are stored as Markdown files in the `prompts/` directory. You can customize these to adjust how the LLM evaluates contenders.
 
 ## Results viewer
-There is a streamlit results viewer. To run:
+There is a streamlit results viewer. For multirun it only works with the consistency_summary...json file. To run:
 ```bash
 streamlit run ui/web_ui.py
 ```
