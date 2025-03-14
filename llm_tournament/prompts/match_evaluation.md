@@ -27,6 +27,7 @@ Follow these instructions carefully:
 4. Calculate the overall scores using the weights defined in the criteria
 5. Determine the winner based on the overall scores
 6. Provide a detailed rationale for your evaluation
+7. Format the response as a json object
 
 ## Response Format
 You must respond with a JSON object in exactly the following format:
@@ -57,3 +58,4 @@ Important notes:
 - Calculate the overall score for each contender as the weighted sum of their criterion scores
 - Scores should be within the range specified in the scoring system
 - The "rationale" should provide a clear, detailed explanation of your evaluation
+- Respond only with a json object.

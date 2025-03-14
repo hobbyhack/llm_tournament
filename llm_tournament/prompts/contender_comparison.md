@@ -19,6 +19,7 @@ Follow these instructions carefully:
 2. Identify the strengths and weaknesses of each contender for each criterion
 3. Determine which contender is stronger overall, based on the weighted importance of the criteria
 4. Provide a detailed justification for your conclusion
+5. Format the response as a json object
 
 ## Response Format
 You must respond with a JSON object in exactly the following format:
@@ -49,3 +50,4 @@ Important notes:
 - Set the "overall_winner" field to "$contender1_id", "$contender2_id", or null (if tied)
 - The overall winner should be determined by considering the weights of the criteria
 - The "rationale" should provide a thorough explanation of your overall assessment
+- Respond only with a json object.

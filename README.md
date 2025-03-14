@@ -31,7 +31,7 @@ Use cases include:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/llm-tournament.git
+   git clone https://github.com/hobbyhack/llm-tournament.git
    cd llm-tournament
    ```
 
@@ -51,6 +51,11 @@ Run a tournament with the example data:
 ```bash
 python main.py --contenders examples/contenders.json --framework examples/framework.json
 ```
+
+```bash
+python main.py --contenders examples/contenders_fb_ads_02.json --framework examples/framework_saas_fb_ad_o3.json --output ./results/gemma3_12b_test_01.json --model gemma3:12b
+```
+
 
 ### Command Line Options
 
@@ -77,8 +82,9 @@ options:
 To run multiple tournaments with different models and analyze consistency:
 
 ```bash
-python run_multiple_tournaments.py --contenders examples/contenders.json --framework examples/framework.json --models mistral-small phi4 --runs 5 --run-analysis
+python run_multiple_tournaments.py --contenders examples/contenders_fb_ads_02.json --framework examples/framework_saas_fb_ad_o3.json --models gemma3:27b phi4 --runs 3 --run-analysis
 ```
+
 
 This will:
 1. Run 5 tournaments with each specified model

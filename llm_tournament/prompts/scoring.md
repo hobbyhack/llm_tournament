@@ -15,6 +15,7 @@ Follow these instructions carefully:
 3. Calculate weighted scores using the weights specified in the criteria
 4. Determine the overall winner based on the total weighted scores
 5. Ensure your scores are consistent with the evaluation text
+6. Format the response as a json object
 
 ## Response Format
 You must respond with a JSON object in exactly the following format:
@@ -45,3 +46,4 @@ Important notes:
 - The overall scores should be calculated as weighted averages using the criteria weights
 - The "winner" field should contain the ID of the contender with the highest overall score, or null if tied
 - Scores should accurately reflect the nuances described in the evaluation text
+- Respond only with a json object.

@@ -162,7 +162,7 @@ def run_multiple_tournaments(args: argparse.Namespace) -> Dict[str, List[str]]:
 
         for run in range(1, args.runs + 1):
             # Generate unique output filename
-            run_id = f"{model}_{timestamp}_run{run}"
+            run_id = f"{model.replace(":", "_")}_{timestamp}_run{run}"
             output_file = os.path.join(args.output_dir, f"tournament_{run_id}.json")
 
             # Run the tournament

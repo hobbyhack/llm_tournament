@@ -2,7 +2,7 @@
 
 tournament:
   # Number of rounds for each matchup of contenders
-  rounds_per_matchup: 4
+  rounds_per_matchup: 1
   
   # Whether to create reverse matchups (A vs B and B vs A)
   reverse_matchups: true
@@ -18,7 +18,7 @@ llm:
   provider: "ollama"
   
   # Default model to use
-  default_model: "phi4"
+  default_model: "gemma3:27b"
   
   # Timeout for LLM requests in seconds
   timeout: 1
@@ -31,10 +31,10 @@ llm:
   
   # Mapping of prompt names to models
   model_mapping:
-    match_evaluation: "phi4"
-    contender_comparison: "phi4"
-    scoring: "phi4"
-    validation: "phi4"
+    match_evaluation: "gemma3:27b"
+    contender_comparison: "gemma3:27b"
+    scoring: "gemma3:27b"
+    validation: "gemma3:27b"
 
 prompts:
   # Directory containing prompt templates

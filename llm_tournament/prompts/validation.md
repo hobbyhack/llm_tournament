@@ -15,6 +15,7 @@ Follow these instructions carefully:
 3. If the response is valid, indicate this in your output
 4. If the response is not valid, correct it to match the expected format while preserving the original assessment
 5. If any critical information is missing and cannot be inferred, note this in your error message
+6. Format the response as a json object
 
 ## Response Format
 You must respond with a JSON object in exactly the following format:
@@ -37,3 +38,4 @@ Important notes:
 - Make sure all required fields are present in the corrected response
 - Ensure all numeric values are properly formatted as numbers, not strings
 - The corrected_response field should contain a complete, valid JSON object that matches the expected format
+- Respond only with a json object.
